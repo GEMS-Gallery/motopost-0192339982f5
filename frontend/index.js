@@ -31,8 +31,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         const author = document.getElementById('author').value;
         const content = document.getElementById('content').value;
 
-        await backend.createPost(title, content, author);
-        postForm.reset();
-        await displayPosts();
+        try {
+            await backend.createPost(title, content, author);
+            postForm.reset();
+            await displayPosts(); // Refresh the post list after creating a new post
+        } catch (error) {
+            console.error('Error creating post:', error);
+            alert('Failed to create post. Please try again.');
+        }
     });
 });
