@@ -1,4 +1,4 @@
-import { backend } from 'declarations/backend';
+import { backend } from './declarations/backend';
 
 document.addEventListener('DOMContentLoaded', async () => {
     const postForm = document.getElementById('post-form');
