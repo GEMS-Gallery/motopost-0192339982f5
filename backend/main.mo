@@ -10,7 +10,6 @@ import Option "mo:base/Option";
 import Time "mo:base/Time";
 
 actor BlogPost {
-    // Define the structure of a blog post
     public type Post = {
         id: Nat;
         title: Text;
@@ -19,11 +18,9 @@ actor BlogPost {
         createdAt: Int;
     };
 
-    // Stable variable to store blog posts
     stable var posts : [Post] = [];
     stable var nextId : Nat = 0;
 
-    // Create a new blog post
     public func createPost(title: Text, content: Text, author: Text) : async Nat {
         let post : Post = {
             id = nextId;
@@ -34,20 +31,19 @@ actor BlogPost {
         };
         posts := Array.append(posts, [post]);
         nextId += 1;
+        Debug.print("Post created with ID: " # debug_show(nextId - 1));
         nextId - 1
     };
 
-    // Get all blog posts
     public query func getAllPosts() : async [Post] {
+        Debug.print("Returning " # debug_show(posts.size()) # " posts");
         posts
     };
 
-    // Get a specific blog post by ID
     public query func getPost(id: Nat) : async ?Post {
         Array.find(posts, func (post: Post) : Bool { post.id == id })
     };
 
-    // Update a blog post
     public func updatePost(id: Nat, title: Text, content: Text) : async Bool {
         posts := Array.map(posts, func (post: Post) : Post {
             if (post.id == id) {
@@ -64,7 +60,6 @@ actor BlogPost {
         true
     };
 
-    // Delete a blog post
     public func deletePost(id: Nat) : async Bool {
         let initialLength = posts.size();
         posts := Array.filter(posts, func (post: Post) : Bool { post.id != id });
